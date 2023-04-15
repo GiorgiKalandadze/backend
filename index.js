@@ -5,7 +5,7 @@ const config = require('./src/config.js');
 const DBManager = require('./src/database/db-manager');
 const {MongoClient} = require('mongodb');
 const client = new MongoClient(process.env.MONGODB_URI);
-
+const {getEmployee, getEmployeesList, addEmployee} = require('./src/modules/employees-and-departments/api-employee-handler');
 app.listen(config.port, () => {
     console.log(`Listening to ${config.port}`);
 });
@@ -31,4 +31,36 @@ app.get('/', (request, response) => {
         message: 'Welcome',
     });
 });
+
+
+
+/**
+ * Retrieves a list of employees with optional pagination.
+ *
+ * @param {object} request - The HTTP request object.
+ * @param {object} response - The HTTP response object.
+ * @returns {object} - The HTTP response object.
+ */
+app.get('/api/getEmployees', async (request, response) => {
+    await getEmployeesList(request, response);
+
+});
+
+/**
+ * Retrieves an employee according to id
+ *
+ * @param {object} request - The HTTP request object.
+ * @param {object} response - The HTTP response object.
+ * @returns {object} - The HTTP response object.
+ */
+app.get('/api/getEmployee/:id', async (request, response) => {
+    await getEmployee(request, response);
+});
+
+app.post('/api/addEmployee', async (request, response) => {
+    await addEmployee(request, response);
+});
+
+
+
 
