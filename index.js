@@ -16,11 +16,10 @@ async function main() {
         console.log('Successfully connected to Mongo');
         DBManager.setClient(client);
     } catch (e) {
-        console.error('Error connecting to MongoDB client:', e);
-        console.error(e.stack); // Log the error stack trace
+        console.error('Error connecting to MongoDB client: ', e);
     }
 }
-main().catch((e) => console.error(e));
+main().catch();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -29,7 +28,7 @@ app.get('/', (request, response) => {
     response.json({
         resultCode: 0,
         resultStatus: 'SUCCESS',
-        message: 'Welcome to API 23 23 23 ',
+        message: 'Welcome',
     });
 });
 
