@@ -1,0 +1,17 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: server_container  # Set the name of the container
+    image: server_image:1.0  # Set the name of the image
+    ports:
+      - "3000:3000"  # Map host port 3000 to container port 3000
+    env_file:
+          - .env
+    environment:
+      - MONGODB_URI=${MONGODB_URI}  # MongoDB's connection URI take from .env file
+    volumes:
+      - .:/app
+      - ./app/node_modules
