@@ -90,9 +90,9 @@ app.post('/api/register', async (request, response) => {
     await registerUser(request, response);
 });
 
-// app.post('/api/login', async (request, response) => {
-//    await handleLogin(request, response);
-// });
+app.post('/api/login', async (request, response) => {
+   await handleLogin(request, response);
+});
 //
 // const authMiddleware = (req, res, next) => {
 //     try {

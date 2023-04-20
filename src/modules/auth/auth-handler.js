@@ -48,45 +48,53 @@ const registerUser = async (request, response) => {
     });
 };
 
-// const handleLogin = async (request, response) => {
-//     const {user, password} = request.body;
-//     // validate
-//     if (!user || !password) {
-//         return response.status(400).json({
-//             resultCode: -1,
-//             resultStatus: 'ERROR',
-//             message: 'Email and password are required',
-//         });
-//     }
-//
-//     // Check if email exists in the database
-//     const exists = await DBManager.getDocument(config.DB_NAME, config.USERS_COLLECTION, {user: user});
-//     if (!exists) {
-//         return response.status(401).json({
-//             resultCode: -1,
-//             resultStatus: 'ERROR',
-//             message: 'User doesn\'t exists',
-//         });
-//     }
-//
-//     const passwordMatch = bcrypt.compare(password, exists.password);
-//     if(!passwordMatch) {
-//         return response.status(401).json({
-//             resultCode: -1,
-//             resultStatus: 'ERROR',
-//             message: 'Wrong Password',
-//         });
-//     }
-//
-//     // Generate JWT token
-//     const token = jwt.sign({ userName: user }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
-//     return response.json({
-//         resultCode: 0,
-//         resultStatus: 'SUCCESS',
-//         message: '',
-//         data: {token},
-//     });
-// };
+const handleLogin = async (request, response) => {
+    let username, password
+    try {
+        ({user: {username, password}} = request.body);
+    } catch (e) {
+        return response.status(400).json({
+            resultCode: -1,
+            resultStatus: 'ERROR',
+            message: 'user and password are required',
+        });
+    }
+    if (!username || !password) {
+        return response.status(400).json({
+            resultCode: -1,
+            resultStatus: 'ERROR',
+            message: 'user and password are required',
+        });
+    }
+
+    // Check if user exists in the database
+    const userFound = await DBManager.getDocument(config.DB_NAME, config.USERS_COLLECTION, {username});
+    if (!userFound) {
+        return response.status(400).json({
+            resultCode: -1,
+            resultStatus: 'ERROR',
+            message: 'User doesn\'t exists',
+        });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, userFound.password);
+    if(!passwordMatch) {
+        return response.status(401).json({
+            resultCode: -1,
+            resultStatus: 'ERROR',
+            message: 'Wrong Password',
+        });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign({ username: username }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+    return response.json({
+        resultCode: 0,
+        resultStatus: 'SUCCESS',
+        message: '',
+        data: {token},
+    });
+};
 
 
 
