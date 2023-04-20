@@ -1,6 +1,6 @@
 const DBManager = require('../../database/db-manager');
 const config = require('../../config');
-const {validateEmployee} = require('./validator');
+const {validateEmployee} = require('./validation-rules');
 
 const getEmployeesList = async (request, response) => {
     let {skip = 0, take = 10} = request.query;
@@ -17,7 +17,7 @@ const getEmployeesList = async (request, response) => {
 
     let employeesList;
     try {
-        employeesList = DBManager.getManyDocuments(config.dbName, config.employeeCollection, {}, skip, take);
+        employeesList = DBManager.getManyDocuments(config.DB_NAME, config.EMPLOYEE_COLLECTION, {}, skip, take);
     } catch (err) {
         console.error('Error while retrieving employees', err);
         return response.status(500).json({
@@ -50,7 +50,7 @@ const getEmployee = async (request, response) => {
     }
     let employee;
     try {
-        employee = await DBManager.getDocument(config.dbName, config.employeeCollection, {id: id});
+        employee = await DBManager.getDocument(config.DB_NAME, config.EMPLOYEE_COLLECTION, {id: id});
     } catch (err) {
         console.error('Error while retrieving employees', err);
         return response.status(500).json({
@@ -87,7 +87,7 @@ const addEmployee = async (request, response) => {
         });
     }
     try {
-        await DBManager.insertDocument(config.dbName, config.employeeCollection, employee);
+        await DBManager.insertDocument(config.DB_NAME, config.EMPLOYEE_COLLECTION, employee);
     } catch (error) {
         console.error('Error while adding employee: ', error);
         return response.status(500).json({
@@ -107,5 +107,43 @@ const addEmployee = async (request, response) => {
 
 };
 
-module.exports = {getEmployeesList, getEmployee, addEmployee};
+/**
+ * Updated employee data
+ * @param request
+ * @param response
+ * @returns {Promise<*>}
+ */
+const updateEmployee = async (request, response) => {
+    const {employee} = request.body;
+    const {isValid, message} = await validateEmployee(employee);
+    if(!isValid) {
+        return response.status(400).json({
+            resultCode: -1,
+            resultStatus: 'ERROR',
+            message: message,
+            data: null,
+        });
+    }
+    try {
+        await DBManager.updateDocument(config.DB_NAME, config.EMPLOYEE_COLLECTION, {id: employee.id}, employee);
+    } catch (error) {
+        console.error('Error while updating employee: ', error);
+        return response.status(500).json({
+            resultCode: -1,
+            resultStatus: 'ERROR',
+            message: 'Error while updating employee',
+            data: null,
+        });
+    }
+    return response.json({
+        resultCode: 0,
+        resultStatus: 'SUCCESS',
+        message: 'Employee updated successfully',
+        data: {},
+    });
+
+
+};
+
+module.exports = {getEmployeesList, getEmployee, addEmployee, updateEmployee};
 
