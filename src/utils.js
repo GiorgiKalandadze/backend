@@ -31,3 +31,5 @@ function generateRandomString(length) {
     return result;
 }
 module.exports = {generateRandomNumber, generateRandomString};
+
+console.log(generateRandomString(15));

@@ -170,6 +170,21 @@ class DBManager {
             throw new Error(`Error getting updating document in collection '${collectionName}': ${error}`);
         }
     }
+
+    /**
+     *
+     * @param dbName
+     * @param collectionName
+     * @param filter
+     * @returns {Promise<number>}
+     */
+    static async getCountOfDocuments(dbName, collectionName, filter) {
+        try {
+            return await DBManager.client.db(dbName).collection(collectionName).countDocuments();
+        } catch (error) {
+            throw new Error(`Error getting count of documents in collection '${collectionName}': ${error}`);
+        }
+    }
 }
 
 module.exports = DBManager;

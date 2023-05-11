@@ -8,20 +8,6 @@ const config = require('../../config');
  * For instance: requirement, correct type, length and etc
  */
 const employeeDataValidatorConfig = {
-    id: [
-        {
-            validateFunction: (value) => value !== undefined,
-            errorMessage: 'id property is required',
-        },
-        {
-            validateFunction: (value) => typeof value === 'number',
-            errorMessage: 'id must be of type number',
-        },
-        {
-            validateFunction: (value) => value > 0,
-            errorMessage: 'id must be positive number',
-        },
-    ],
     firstName: [
         {
             validateFunction: (value) => value !== undefined,

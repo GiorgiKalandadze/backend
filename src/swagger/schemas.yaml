@@ -1,0 +1,15 @@
+# schemas.yaml
+
+EmployeeList:
+  type: array
+  items:
+    type: object
+    properties:
+      id:
+        type: integer
+      firstName:
+        type: string
+      secondName:
+        type: string
+      department:
+        type: string

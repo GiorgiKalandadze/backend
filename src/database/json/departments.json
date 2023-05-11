@@ -1,0 +1,50 @@
+[
+  {
+    "id": "0",
+    "department": "Sales"
+  },
+  {
+    "id": "1",
+    "department": "Marketing"
+  },
+  {
+    "id": "2",
+    "department": "Engineering"
+  },
+  {
+    "id": "3",
+    "department": "PR"
+  },
+  {
+    "id": "4",
+    "department": "Support"
+  },
+  {
+    "id": "5",
+    "department": "Board"
+  },
+  {
+    "id": "6",
+    "department": "HR"
+  },
+  {
+    "id": "7",
+    "department": "Finance"
+  },
+  {
+    "id": "8",
+    "department": "Product Design"
+  },
+  {
+    "id": "9",
+    "department": "Product Management"
+  },
+  {
+    "id": "10",
+    "department": "Custodial"
+  },
+  {
+    "id": "11",
+    "department": "Manufacturing"
+  }
+]

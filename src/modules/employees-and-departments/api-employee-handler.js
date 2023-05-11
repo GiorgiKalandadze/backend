@@ -17,7 +17,7 @@ const getEmployeesList = async (request, response) => {
 
     let employeesList;
     try {
-        employeesList = DBManager.getManyDocuments(config.DB_NAME, config.EMPLOYEE_COLLECTION, {}, skip, take);
+        employeesList = await DBManager.getManyDocuments(config.DB_NAME, config.EMPLOYEE_COLLECTION, {}, skip, take);
     } catch (err) {
         console.error('Error while retrieving employees', err);
         return response.status(500).json({
@@ -86,8 +86,10 @@ const addEmployee = async (request, response) => {
             data: null,
         });
     }
+    const numberOfEmployees = await DBManager.getCountOfDocuments(config.DB_NAME, config.EMPLOYEE_COLLECTION);
+    const newEmployee = {id: numberOfEmployees, ...employee};
     try {
-        await DBManager.insertDocument(config.DB_NAME, config.EMPLOYEE_COLLECTION, employee);
+        await DBManager.insertDocument(config.DB_NAME, config.EMPLOYEE_COLLECTION, newEmployee);
     } catch (error) {
         console.error('Error while adding employee: ', error);
         return response.status(500).json({
